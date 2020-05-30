@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V5.03                                                        05/30/2020  10:42:40  PAGE 1
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/30/2020  12:19:30  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
@@ -27,26 +27,28 @@ LINK MAP OF MODULE:  base_system (?C_STARTUP)
 
             * * * * * * *   D A T A   M E M O R Y   * * * * * * *
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
-            DATA    0008H     0002H     UNIT         ?DT?MAIN
-            DATA    000AH     0001H     UNIT         ?DT?LED
-            DATA    000BH     0001H     UNIT         ?DT?DIGIT_SEG
-            IDATA   000CH     0001H     UNIT         ?STACK
+            DATA    0008H     000DH     UNIT         ?DT?DIGIT_SEG
+            DATA    0015H     0002H     UNIT         ?DT?TASK
+            DATA    0017H     0001H     UNIT         ?DT?LED
+            IDATA   0018H     0001H     UNIT         ?STACK
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
             CODE    0000H     0003H     ABSOLUTE     
-            CODE    0003H     008CH     UNIT         ?C_C51STARTUP
-            CODE    008FH     0055H     UNIT         ?C?LIB_CODE
-            CODE    00E4H     0045H     UNIT         ?PR?MAIN?MAIN
-            CODE    0129H     0019H     UNIT         ?PR?_DELAY1S?MAIN
-            CODE    0142H     0019H     UNIT         ?PR?DIGITAL_SEGMENT?DIGIT_SEG
-            CODE    015BH     0011H     UNIT         ?PR?LED_FLOW?LED
-            CODE    016CH     0010H     UNIT         ?CO?DIGIT_SEG
-            CODE    017CH     000BH     UNIT         ?C_INITSEG
-            CODE    0187H     0008H     UNIT         ?PR?DIGITAL_SEGMENT_INIT?DIGIT_SEG
-            CODE    018FH     0006H     UNIT         ?PR?TSK_CYCLIC_1S?TASK
-            CODE    0195H     0003H     UNIT         ?PR?TSK_INIT?TASK
-            CODE    0198H     0001H     UNIT         ?PR?TSK_CYCLIC_10MS?TASK
-            CODE    0199H     0001H     UNIT         ?PR?TSK_CYCLIC_100MS?TASK
+            CODE    0003H     0008H     UNIT         ?PR?DIGITAL_SEGMENT_INIT?DIGIT_SEG
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     008DH     UNIT         ?PR?ISR_T0?TASK
+            CODE    009BH     008CH     UNIT         ?C_C51STARTUP
+            CODE    0127H     0055H     UNIT         ?C?LIB_CODE
+            CODE    017CH     0027H     UNIT         ?PR?DIGITAL_SEG_CYCLIC?DIGIT_SEG
+            CODE    01A3H     0021H     UNIT         ?PR?TSK_INIT?TASK
+            CODE    01C4H     001BH     UNIT         ?PR?_DIGITAL_SEG_SWITCH?DIGIT_SEG
+            CODE    01DFH     0019H     UNIT         ?C_INITSEG
+            CODE    01F8H     0011H     UNIT         ?PR?LED_FLOW?LED
+            CODE    0209H     0010H     UNIT         ?CO?DIGIT_SEG
+            CODE    0219H     0005H     UNIT         ?PR?MAIN?MAIN
+            CODE    021EH     0003H     UNIT         ?PR?TSK_CYCLIC_1S?TASK
+            CODE    0221H     0001H     UNIT         ?PR?TSK_CYCLIC_10MS?TASK
+            CODE    0222H     0001H     UNIT         ?PR?TSK_CYCLIC_100MS?TASK
 
 
 
@@ -57,28 +59,32 @@ SEGMENT
   +--> CALLED SEGMENT
 ---------------------
 ?C_C51STARTUP
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/30/2020  12:19:30  PAGE 2
+
+
   +--> ?PR?MAIN?MAIN
   +--> ?C_INITSEG
-BL51 BANKED LINKER/LOCATER V5.03                                                      05/30/2020  10:42:40  PAGE 2
-
-
 
 ?PR?MAIN?MAIN
   +--> ?PR?TSK_INIT?TASK
-  +--> ?PR?TSK_CYCLIC_10MS?TASK
-  +--> ?PR?TSK_CYCLIC_100MS?TASK
-  +--> ?PR?TSK_CYCLIC_1S?TASK
-  +--> ?PR?_DELAY1S?MAIN
 
 ?PR?TSK_INIT?TASK
   +--> ?PR?DIGITAL_SEGMENT_INIT?DIGIT_SEG
+  +--> ?PR?_DIGITAL_SEG_SWITCH?DIGIT_SEG
+
+?PR?_DIGITAL_SEG_SWITCH?DIGIT_SEG
+  +--> ?CO?DIGIT_SEG
+
+*** NEW ROOT ***************************************************
+
+?PR?ISR_T0?TASK
+  +--> ?PR?DIGITAL_SEG_CYCLIC?DIGIT_SEG
+  +--> ?PR?TSK_CYCLIC_10MS?TASK
+  +--> ?PR?TSK_CYCLIC_100MS?TASK
+  +--> ?PR?TSK_CYCLIC_1S?TASK
 
 ?PR?TSK_CYCLIC_1S?TASK
   +--> ?PR?LED_FLOW?LED
-  +--> ?PR?DIGITAL_SEGMENT?DIGIT_SEG
-
-?PR?DIGITAL_SEGMENT?DIGIT_SEG
-  +--> ?CO?DIGIT_SEG
 
 
 
@@ -88,8 +94,8 @@ SYMBOL TABLE OF MODULE:  base_system (?C_STARTUP)
   ----------------------------------
 
   -------         MODULE        ?C_STARTUP
-  C:0003H         SEGMENT       ?C_C51STARTUP
-  I:000CH         SEGMENT       ?STACK
+  C:009BH         SEGMENT       ?C_C51STARTUP
+  I:0018H         SEGMENT       ?STACK
   C:0000H         PUBLIC        ?C_STARTUP
   D:00E0H         SYMBOL        ACC
   D:00F0H         SYMBOL        B
@@ -98,7 +104,7 @@ SYMBOL TABLE OF MODULE:  base_system (?C_STARTUP)
   N:0000H         SYMBOL        IBPSTACK
   N:0100H         SYMBOL        IBPSTACKTOP
   N:0080H         SYMBOL        IDATALEN
-  C:0006H         SYMBOL        IDATALOOP
+  C:009EH         SYMBOL        IDATALOOP
   N:0000H         SYMBOL        PBPSTACK
   N:0000H         SYMBOL        PBPSTACKTOP
   N:0000H         SYMBOL        PDATALEN
@@ -107,85 +113,49 @@ SYMBOL TABLE OF MODULE:  base_system (?C_STARTUP)
   N:0000H         SYMBOL        PPAGEENABLE
   D:00A0H         SYMBOL        PPAGE_SFR
   D:0081H         SYMBOL        SP
-  C:0003H         SYMBOL        STARTUP1
+  C:009BH         SYMBOL        STARTUP1
   N:0000H         SYMBOL        XBPSTACK
   N:0000H         SYMBOL        XBPSTACKTOP
   N:0000H         SYMBOL        XDATALEN
   N:0000H         SYMBOL        XDATASTART
   C:0000H         LINE#         92
-  C:0003H         LINE#         99
-  C:0005H         LINE#         100
-  C:0006H         LINE#         101
-  C:0007H         LINE#         102
-  C:0009H         LINE#         151
-  C:000CH         LINE#         155
-BL51 BANKED LINKER/LOCATER V5.03                                                      05/30/2020  10:42:40  PAGE 3
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/30/2020  12:19:30  PAGE 3
 
 
+  C:009BH         LINE#         99
+  C:009DH         LINE#         100
+  C:009EH         LINE#         101
+  C:009FH         LINE#         102
+  C:00A1H         LINE#         151
+  C:00A4H         LINE#         155
   -------         ENDMOD        ?C_STARTUP
 
   -------         MODULE        MAIN
   C:0000H         SYMBOL        _ICE_DUMMY_
-  C:0129H         PUBLIC        _delay1s
-  C:00E4H         PUBLIC        main
-  -------         PROC          _DELAY1S
-  D:0006H         SYMBOL        ms
-  -------         DO            
-  D:0007H         SYMBOL        i
-  D:0006H         SYMBOL        j
-  D:0005H         SYMBOL        k
-  -------         ENDDO         
-  C:0129H         LINE#         5
-  C:0129H         LINE#         6
-  C:0129H         LINE#         8
-  C:0136H         LINE#         9
-  C:0138H         LINE#         10
-  C:0141H         LINE#         11
-  -------         ENDPROC       _DELAY1S
+  C:0219H         PUBLIC        main
   -------         PROC          MAIN
-  -------         DO            
-  D:0008H         SYMBOL        taskCycle
-  -------         ENDDO         
-  C:00E4H         LINE#         13
-  C:00E4H         LINE#         14
-  C:00E4H         LINE#         16
-  C:00E7H         LINE#         17
-  C:00E7H         LINE#         18
-  C:00E7H         LINE#         19
-  C:00EAH         LINE#         20
-  C:00F9H         LINE#         21
-  C:00F9H         LINE#         22
-  C:00FCH         LINE#         23
-  C:00FCH         LINE#         24
-  C:010BH         LINE#         25
-  C:010BH         LINE#         26
-  C:010EH         LINE#         27
-  C:010EH         LINE#         28
-  C:0116H         LINE#         29
-  C:011CH         LINE#         30
-  C:011CH         LINE#         31
-  C:0120H         LINE#         32
-  C:0120H         LINE#         33
-  C:0127H         LINE#         34
+  C:0219H         LINE#         13
+  C:0219H         LINE#         14
+  C:0219H         LINE#         16
+  C:021CH         LINE#         17
+  C:021CH         LINE#         18
+  C:021CH         LINE#         34
   -------         ENDPROC       MAIN
   -------         ENDMOD        MAIN
 
   -------         MODULE        LED
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0090H         PUBLIC        P1
-  C:015BH         PUBLIC        led_flow
+  C:01F8H         PUBLIC        led_flow
   -------         PROC          LED_FLOW
   -------         DO            
-  D:000AH         SYMBOL        aa
+  D:0017H         SYMBOL        aa
   -------         ENDDO         
-  C:015BH         LINE#         4
-BL51 BANKED LINKER/LOCATER V5.03                                                      05/30/2020  10:42:40  PAGE 4
-
-
-  C:015BH         LINE#         5
-  C:015BH         LINE#         8
-  C:015EH         LINE#         9
-  C:016BH         LINE#         10
+  C:01F8H         LINE#         4
+  C:01F8H         LINE#         5
+  C:01F8H         LINE#         8
+  C:01FBH         LINE#         9
+  C:0208H         LINE#         10
   -------         ENDPROC       LED_FLOW
   -------         ENDMOD        LED
 
@@ -193,71 +163,131 @@ SYMBOL TABLE OF MODULE:  base_system (?C_STARTUP)
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0080H         PUBLIC        P0
   D:00A0H         PUBLIC        P2
-  C:016CH         PUBLIC        table
+  C:0209H         PUBLIC        table
   B:00A0H.6       PUBLIC        dula
   B:00A0H.7       PUBLIC        wela
-  C:0142H         PUBLIC        digital_segment
-  C:0187H         PUBLIC        digital_segment_init
+  D:0009H         PUBLIC        ucDigitSegStsVal
+  C:0003H         PUBLIC        digital_segment_init
+  C:01C4H         PUBLIC        _digital_seg_switch
+  C:017CH         PUBLIC        digital_seg_cyclic
   -------         PROC          DIGITAL_SEGMENT_INIT
-  C:0187H         LINE#         7
-  C:0187H         LINE#         8
-  C:0187H         LINE#         9
-  C:0189H         LINE#         11
-  C:018CH         LINE#         12
-  C:018EH         LINE#         17
+  C:0003H         LINE#         11
+  C:0003H         LINE#         12
+  C:0003H         LINE#         13
+  C:0005H         LINE#         15
+  C:0008H         LINE#         16
+  C:000AH         LINE#         21
   -------         ENDPROC       DIGITAL_SEGMENT_INIT
-  -------         PROC          DIGITAL_SEGMENT
+  -------         PROC          DIGITAL_SEG_CYCLIC
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/30/2020  12:19:30  PAGE 4
+
+
   -------         DO            
-  D:000BH         SYMBOL        index
+  D:0008H         SYMBOL        index
   -------         ENDDO         
-  C:0142H         LINE#         18
-  C:0142H         LINE#         19
-  C:0142H         LINE#         22
-  C:0144H         LINE#         23
-  C:014CH         LINE#         24
-  C:014EH         LINE#         25
-  C:0150H         LINE#         26
-  C:0157H         LINE#         27
-  C:0157H         LINE#         28
-  C:015AH         LINE#         29
-  C:015AH         LINE#         30
-  -------         ENDPROC       DIGITAL_SEGMENT
+  C:017CH         LINE#         22
+  C:017CH         LINE#         23
+  C:017CH         LINE#         26
+  C:017EH         LINE#         27
+  C:0188H         LINE#         28
+  C:018AH         LINE#         29
+  C:018CH         LINE#         30
+  C:0196H         LINE#         31
+  C:0198H         LINE#         33
+  C:019AH         LINE#         34
+  C:019FH         LINE#         35
+  C:019FH         LINE#         36
+  C:01A2H         LINE#         37
+  C:01A2H         LINE#         38
+  -------         ENDPROC       DIGITAL_SEG_CYCLIC
+  -------         PROC          _DIGITAL_SEG_SWITCH
+  D:0007H         SYMBOL        ucChannel
+  D:0005H         SYMBOL        unValue
+  C:01C4H         LINE#         39
+  C:01C4H         LINE#         40
+  C:01C4H         LINE#         41
+  C:01D0H         LINE#         42
+  C:01D0H         LINE#         43
+  C:01DEH         LINE#         44
+  C:01DEH         LINE#         45
+  -------         ENDPROC       _DIGITAL_SEG_SWITCH
   -------         ENDMOD        DIGIT_SEG
 
   -------         MODULE        TASK
   C:0000H         SYMBOL        _ICE_DUMMY_
-  C:0199H         PUBLIC        tsk_cyclic_100ms
-  C:018FH         PUBLIC        tsk_cyclic_1s
-  C:0198H         PUBLIC        tsk_cyclic_10ms
-  C:0195H         PUBLIC        tsk_init
+  C:0222H         PUBLIC        tsk_cyclic_100ms
+  B:00A8H.7       PUBLIC        EA
+  D:0015H         PUBLIC        taskCycle
+  C:000EH         PUBLIC        isr_T0
+  C:021EH         PUBLIC        tsk_cyclic_1s
+  D:0089H         PUBLIC        TMOD
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  C:0221H         PUBLIC        tsk_cyclic_10ms
+  B:0088H.4       PUBLIC        TR0
+  C:01A3H         PUBLIC        tsk_init
   -------         PROC          TSK_CYCLIC_10MS
-  C:0198H         LINE#         5
-  C:0198H         LINE#         6
+  C:0221H         LINE#         10
+  C:0221H         LINE#         11
+  C:0221H         LINE#         13
   -------         ENDPROC       TSK_CYCLIC_10MS
   -------         PROC          TSK_CYCLIC_100MS
-  C:0199H         LINE#         8
-  C:0199H         LINE#         9
-  C:0199H         LINE#         10
+  C:0222H         LINE#         15
+  C:0222H         LINE#         16
+  C:0222H         LINE#         17
   -------         ENDPROC       TSK_CYCLIC_100MS
-BL51 BANKED LINKER/LOCATER V5.03                                                      05/30/2020  10:42:40  PAGE 5
-
-
   -------         PROC          TSK_CYCLIC_1S
-  C:018FH         LINE#         11
-  C:018FH         LINE#         12
-  C:018FH         LINE#         13
-  C:0192H         LINE#         14
+  C:021EH         LINE#         18
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/30/2020  12:19:30  PAGE 5
+
+
+  C:021EH         LINE#         19
+  C:021EH         LINE#         20
   -------         ENDPROC       TSK_CYCLIC_1S
   -------         PROC          TSK_INIT
-  C:0195H         LINE#         16
-  C:0195H         LINE#         17
-  C:0195H         LINE#         18
+  C:01A3H         LINE#         22
+  C:01A3H         LINE#         23
+  C:01A3H         LINE#         24
+  C:01A6H         LINE#         25
+  C:01ADH         LINE#         26
+  C:01B4H         LINE#         29
+  C:01B7H         LINE#         30
+  C:01BAH         LINE#         31
+  C:01BDH         LINE#         32
+  C:01BFH         LINE#         33
+  C:01C1H         LINE#         34
+  C:01C3H         LINE#         35
   -------         ENDPROC       TSK_INIT
+  -------         PROC          ISR_T0
+  C:000EH         LINE#         37
+  C:002BH         LINE#         39
+  C:002EH         LINE#         40
+  C:0031H         LINE#         41
+  C:0034H         LINE#         42
+  C:0043H         LINE#         43
+  C:0043H         LINE#         44
+  C:0046H         LINE#         45
+  C:0046H         LINE#         46
+  C:0055H         LINE#         47
+  C:0055H         LINE#         48
+  C:0058H         LINE#         49
+  C:0058H         LINE#         50
+  C:0067H         LINE#         51
+  C:0067H         LINE#         52
+  C:006AH         LINE#         53
+  C:006AH         LINE#         54
+  C:0072H         LINE#         55
+  C:007AH         LINE#         56
+  C:007AH         LINE#         57
+  C:0080H         LINE#         58
+  C:0080H         LINE#         59
+  -------         ENDPROC       ISR_T0
   -------         ENDMOD        TASK
 
   -------         MODULE        ?C?UIDIV
-  C:008FH         PUBLIC        ?C?UIDIV
+  C:0127H         PUBLIC        ?C?UIDIV
   -------         ENDMOD        ?C?UIDIV
 
-Program Size: data=13.0 xdata=0 code=410
+Program Size: data=25.0 xdata=0 code=547
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

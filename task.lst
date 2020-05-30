@@ -1,4 +1,4 @@
-C51 COMPILER V7.06   TASK                                                                  05/30/2020 10:42:40 PAGE 1   
+C51 COMPILER V7.06   TASK                                                                  05/30/2020 12:19:30 PAGE 1   
 
 
 C51 COMPILER V7.06, COMPILATION OF MODULE TASK
@@ -7,33 +7,76 @@ COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE src\task.c BROWSE DEBUG OBJECTEXTEN
 
 stmt level    source
 
-   1          #include "led.h"
-   2          #include "digit_seg.h"
-   3          #include "task.h"
-   4          
-   5          void tsk_cyclic_10ms(void)
-   6          {}
+   1          #include <reg51.h>
+   2          #include "led.h"
+   3          #include "digit_seg.h"
+   4          #include "task.h"
+   5          
+   6          #define ISR_INTERVAL 918 //918-1ms,1836-2ms,4589-5ms,9179-10ms,45893-50ms
    7          
-   8          void tsk_cyclic_100ms(void)
-   9          {
-  10   1      }
-  11          void tsk_cyclic_1s(void)
-  12          {
-  13   1          led_flow();
-  14   1              digital_segment();
-  15   1      }
-  16          void tsk_init(void)
-  17          {
-  18   1              digital_segment_init();
-  19   1      }
+   8          unsigned int taskCycle=0;
+   9          
+  10          void tsk_cyclic_10ms(void)
+  11          {
+  12   1          
+  13   1      }
+  14          
+  15          void tsk_cyclic_100ms(void)
+  16          {
+  17   1      }
+  18          void tsk_cyclic_1s(void)
+  19          {
+  20   1          led_flow();
+  21   1      }
+  22          void tsk_init(void)
+  23          {
+  24   1              digital_segment_init();
+  25   1              digital_seg_switch(0,3);
+  26   1              digital_seg_switch(2,10);
+  27   1      
+  28   1              //³õÊ¼»¯¼ÆÊ±Æ÷oÖÐ¶Ï
+  29   1              TMOD=0x01;
+  30   1              TH0=(65536-ISR_INTERVAL)/256;//¾§ÕñÆµÂÊÎª11.014357Mhz£¬»úÆ÷ÖÜÆÚÎª12/11014357=1.089487112139183us,¼Æ1msÐèÒ
+             -ª1000/1.089=918
+  31   1              TL0=(65536-ISR_INTERVAL)%256;
+  32   1              EA=1;
+  33   1              ET0=1;
+  34   1              TR0=1;
+  35   1      }
+  36          
+  37          void isr_T0() interrupt 1
+  38          {
+  39   1          TH0=(65536-ISR_INTERVAL)/256;
+  40   1              TL0=(65536-ISR_INTERVAL)%256;
+  41   1              digital_seg_cyclic();
+  42   1              if(taskCycle%10==0)
+  43   1              {
+  44   2                  tsk_cyclic_10ms();
+  45   2              }
+  46   1              if(taskCycle%100==0)
+  47   1              {
+  48   2                  tsk_cyclic_100ms();
+  49   2              }
+  50   1              if(taskCycle%1000==0)
+  51   1              {
+  52   2                  tsk_cyclic_1s();
+  53   2              }
+  54   1              taskCycle++;
+C51 COMPILER V7.06   TASK                                                                  05/30/2020 12:19:30 PAGE 2   
+
+  55   1              if(taskCycle==1000)
+  56   1              {
+  57   2                  taskCycle=0;
+  58   2              }
+  59   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     11    ----
+   CODE SIZE        =    179    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----    ----
+   DATA SIZE        =      2    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
