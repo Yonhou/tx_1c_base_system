@@ -3,6 +3,7 @@
 #include "digit_seg.h"
 #include "key.h"
 #include "app_stopwatch.h"
+#include "lcd.h"
 #include "task.h"
 
 #define ISR_T0_INTERVAL 922 //922-1ms,1843-2ms,4608-5ms,9216-10ms,46080-50ms
@@ -14,7 +15,9 @@ unsigned int taskCycle_1s=0;
 
 void tsk_cyclic_10ms(void)
 {
+#if !(defined(LCD_EN))
     key_main();
+#endif
 }
 
 void tsk_cyclic_100ms(void)
@@ -28,9 +31,11 @@ void tsk_cyclic_1s(void)
 }
 void tsk_init(void)
 {
+#if !(defined(LCD_EN))
 	digital_segment_init();
-
-
+#else   
+	lcd_init();
+#endif
 	//初始化计时器中断
 	TMOD=0x11;
 	//T0
@@ -67,8 +72,9 @@ void isr_T0() interrupt 1
 {
     TH0=(65536-ISR_T0_INTERVAL)/256;
 	TL0=(65536-ISR_T0_INTERVAL)%256;
+#if !(defined(LCD_EN))
 	digital_seg_cyclic();//Try to avoid shedule task in 1ms interrupt.
-	
+#endif
 	taskCycle_10ms++;
 }
 
@@ -76,7 +82,6 @@ void isr_T1() interrupt 3
 {
     TH1=(65536-ISR_T1_INTERVAL)/256;
 	TL1=(65536-ISR_T1_INTERVAL)%256;
-	//digital_seg_cyclic();//Try to avoid shedule task in 1ms interrupt.
 	
 	taskCycle_100ms++;
 	taskCycle_1s++;

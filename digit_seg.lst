@@ -1,4 +1,4 @@
-C51 COMPILER V7.06   DIGIT_SEG                                                             05/30/2020 21:05:36 PAGE 1   
+C51 COMPILER V7.06   DIGIT_SEG                                                             05/31/2020 00:14:52 PAGE 1   
 
 
 C51 COMPILER V7.06, COMPILATION OF MODULE DIGIT_SEG
@@ -11,62 +11,66 @@ stmt level    source
    1          #include <reg51.h>
    2          sbit dula=P2^6;//U1Ëø´æÆ÷Ëø´æ¶Ë
    3          sbit wela=P2^7;//U2Ëø´æÆ÷Ëø´æ¶Ë
-   4          unsigned char code table[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x7
-             -1};
-   5          unsigned char code ucWeTable[]={0xFE,0xFD,0xFB,0xF7,0xEF,0xDF};//,0x7d,0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,
+   4          unsigned char code table[]={0x3f/*0*/,0x06/*1*/,0x5b/*2*/,0x4f/*3*/,0x66/*4*/,0x6d/*5*/,0x7d/*6*/,0x07/*7*
+             -/,\
+   5                                      0x7f/*8*/,0x6f/*9*/,0x77/*A*/,0x7c/*b*/,0x39/*C*/,0x5e/*d*/,0x79/*E*/,0x71/*F*
+             -/,\
+   6                                                                  0xBF/*0.*/,0x86/*1.*/,0xdb/*2.*/,0xcf/*3.*/,0xe6/*4.*/,0xed/*5.*/,0xfd/*6.*/,0x87/*7.*/,\
+   7                                                                  0xff/*8.*/,0xef/*9.*/};
+   8          unsigned char code ucWeTable[]={0xFE,0xFD,0xFB,0xF7,0xEF,0xDF};//,0x7d,0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,
              -0x79,0x71};
-   6          typedef struct{
-   7              unsigned char ucWe;
-   8                  unsigned char ucValue;
-   9          }stDigitSegSts;
-  10          stDigitSegSts ucDigitSegStsVal[]={{0xFF,0x00},{0xFF,0x00},{0xFF,0x00},{0xFF,0x00},{0xFF,0x00},{0xFF,0x00}}
+   9          typedef struct{
+  10              unsigned char ucWe;
+  11                  unsigned char ucValue;
+  12          }stDigitSegSts;
+  13          stDigitSegSts ucDigitSegStsVal[]={{0xFF,0x00},{0xFF,0x00},{0xFF,0x00},{0xFF,0x00},{0xFF,0x00},{0xFF,0x00}}
              -;//Ä¬ÈÏ¹Ø±ÕËùÓÐÊýÂë¹Ü
-  11          
-  12          void digital_segment_init(void)
-  13          {
-  14   1              wela=1;
-  15   1              //P0=aa;
-  16   1              P0=0xC0;
-  17   1              wela=0;
-  18   1      
-  19   1              //dula=1;
-  20   1              //P0=0x7F;
-  21   1              //dula=0;
-  22   1      }
-  23          void digital_seg_cyclic(void)
-  24          {
-  25   1          static unsigned char index=0;
-  26   1          //ÊýÂë¹Ü
-  27   1              P0=0x00;
-  28   1              dula=1;
-  29   1              P0=ucDigitSegStsVal[index].ucValue;
-  30   1              dula=0;
-  31   1              P0=0xFF;
-  32   1          wela=1;
-  33   1              P0=ucDigitSegStsVal[index].ucWe;
-  34   1              wela=0;
-  35   1      
-  36   1              index++;
-  37   1              if(index==(sizeof(ucDigitSegStsVal)/sizeof(stDigitSegSts)))
-  38   1              {
-  39   2                  index=0;
-  40   2              }
-  41   1      }
-  42          void digital_seg_switch(unsigned char ucChannel,unsigned char unValue)
-  43          {
-  44   1          if((unValue<=sizeof(table))&&(ucChannel<(sizeof(ucDigitSegStsVal)/sizeof(stDigitSegSts))))
-  45   1              {
-  46   2                  ucDigitSegStsVal[ucChannel].ucValue = table[unValue];
-  47   2                      ucDigitSegStsVal[ucChannel].ucWe=ucWeTable[ucChannel];
-  48   2              }
-  49   1      }
+  14          
+  15          void digital_segment_init(void)
+  16          {
+  17   1              wela=1;
+  18   1              //P0=aa;
+  19   1              P0=0xC0;
+  20   1              wela=0;
+  21   1      
+  22   1              //dula=1;
+  23   1              //P0=0x7F;
+  24   1              //dula=0;
+  25   1      }
+  26          void digital_seg_cyclic(void)
+  27          {
+  28   1          static unsigned char index=0;
+  29   1          //ÊýÂë¹Ü
+  30   1              P0=0x00;
+  31   1              dula=1;
+  32   1              P0=ucDigitSegStsVal[index].ucValue;
+  33   1              dula=0;
+  34   1              P0=0xFF;
+  35   1          wela=1;
+  36   1              P0=ucDigitSegStsVal[index].ucWe;
+  37   1              wela=0;
+  38   1      
+  39   1              index++;
+  40   1              if(index==(sizeof(ucDigitSegStsVal)/sizeof(stDigitSegSts)))
+  41   1              {
+  42   2                  index=0;
+  43   2              }
+  44   1      }
+  45          void digital_seg_switch(unsigned char ucChannel,unsigned char unValue)
+  46          {
+  47   1          if((unValue<=sizeof(table))&&(ucChannel<(sizeof(ucDigitSegStsVal)/sizeof(stDigitSegSts))))
+  48   1              {
+  49   2                  ucDigitSegStsVal[ucChannel].ucValue = table[unValue];
+  50   2                      ucDigitSegStsVal[ucChannel].ucWe=ucWeTable[ucChannel];
+C51 COMPILER V7.06   DIGIT_SEG                                                             05/31/2020 00:14:52 PAGE 2   
 
+  51   2              }
+  52   1      }
 
-C51 COMPILER V7.06   DIGIT_SEG                                                             05/30/2020 21:05:36 PAGE 2   
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =     94    ----
-   CONSTANT SIZE    =     22    ----
+   CONSTANT SIZE    =     32    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =     13    ----
