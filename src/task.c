@@ -1,11 +1,12 @@
 #include <reg51.h>
 #include "led.h"
 #include "digit_seg.h"
+#include "key.h"
 #include "app_stopwatch.h"
 #include "task.h"
 
 #define ISR_T0_INTERVAL 918 //918-1ms,1836-2ms,4589-5ms,9179-10ms,45893-50ms
-#define ISR_T1_INTERVAL 45893 //918-1ms,1836-2ms,4589-5ms,9179-10ms,45893-50ms
+#define ISR_T1_INTERVAL 45902 //0.99998911s as simulation result.  //918-1ms,1836-2ms,4589-5ms,9179-10ms,45893-50ms
 
 unsigned char taskCycle_10ms=0;
 unsigned char taskCycle_100ms=0;
@@ -13,25 +14,24 @@ unsigned int taskCycle_1s=0;
 
 void tsk_cyclic_10ms(void)
 {
-    
+    key_main();
 }
 
 void tsk_cyclic_100ms(void)
 {
-    //digital_seg_cyclic();
+
 }
 void tsk_cyclic_1s(void)
 {
     led_flow();
 	app_stopwatch_main();
-	//digital_seg_cyclic();
 }
 void tsk_init(void)
 {
 	digital_segment_init();
 
 
-	//初始化计时器o中断
+	//初始化计时器中断
 	TMOD=0x11;
 	//T0
 	TH0=(65536-ISR_T0_INTERVAL)/256;//晶振频率为11.014357Mhz，机器周期为12/11014357=1.089487112139183us,计1ms需要1000/1.089=918

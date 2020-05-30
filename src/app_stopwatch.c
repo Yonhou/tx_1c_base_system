@@ -1,5 +1,8 @@
 #include "digit_seg.h"
+#include "key.h"
 #include "app_stopwatch.h"
+
+
 void app_stopwatch_main(void)
 {
     static unsigned char hrs=0,mins=0,secs=0;
@@ -17,6 +20,12 @@ void app_stopwatch_main(void)
 			    hrs=0;
 			}
 		}
+	}
+	if(key_get_sts()!=0)
+	{
+	    hrs=0;
+		mins=0;
+		secs=0;
 	}
 	digital_seg_switch(0,hrs/10);
 	digital_seg_switch(1,hrs%10);

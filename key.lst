@@ -1,0 +1,53 @@
+C51 COMPILER V7.06   KEY                                                                   05/30/2020 16:54:03 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE KEY
+OBJECT MODULE PLACED IN key.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE src\key.c BROWSE DEBUG OBJECTEXTEND PRINT(.\key.lst) OBJECT(key.obj)
+
+stmt level    source
+
+   1          #include <reg51.h>
+   2          #include "key.h"
+   3          sbit key_s2=P3^4;
+   4          sbit key_s3=P3^5;
+   5          sbit key_s4=P3^6;
+   6          sbit key_s5=P3^7;
+   7          unsigned char ucKeyPressSts=0x00;
+   8          unsigned char ucKeyDebounceCnt=0x00;
+   9          void key_main(void)
+  10          {
+  11   1          if(key_s2==0)
+  12   1              {
+  13   2                  ucKeyDebounceCnt|=((ucKeyDebounceCnt&0x03)+1);
+  14   2                      if((ucKeyDebounceCnt&0x03)==0x03)
+  15   2                      {
+  16   3                          ucKeyPressSts|=0x01;
+  17   3                          ucKeyDebounceCnt&=0xFC;
+  18   3                      }
+  19   2              }
+  20   1              else
+  21   1              {
+  22   2                  ucKeyPressSts&=0xFC;
+  23   2                  ucKeyDebounceCnt&=0xFC;
+  24   2              }
+  25   1      }
+  26          
+  27          unsigned char key_get_sts(void)
+  28          {
+  29   1          return ucKeyPressSts;
+  30   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     33    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
