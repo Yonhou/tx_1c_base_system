@@ -1,4 +1,4 @@
-C51 COMPILER V7.06   TASK                                                                  05/30/2020 16:54:02 PAGE 1   
+C51 COMPILER V7.06   TASK                                                                  05/30/2020 21:05:36 PAGE 1   
 
 
 C51 COMPILER V7.06, COMPILATION OF MODULE TASK
@@ -14,9 +14,9 @@ stmt level    source
    5          #include "app_stopwatch.h"
    6          #include "task.h"
    7          
-   8          #define ISR_T0_INTERVAL 918 //918-1ms,1836-2ms,4589-5ms,9179-10ms,45893-50ms
-   9          #define ISR_T1_INTERVAL 45902 //0.99998911s as simulation result.  //918-1ms,1836-2ms,4589-5ms,9179-10ms,4
-             -5893-50ms
+   8          #define ISR_T0_INTERVAL 922 //922-1ms,1843-2ms,4608-5ms,9216-10ms,46080-50ms
+   9          #define ISR_T1_INTERVAL 46080 //0.99998911s as simulation result.  //922-1ms,1843-2ms,4608-5ms,9216-10ms,4
+             -6080-50ms
   10          
   11          unsigned char taskCycle_10ms=0;
   12          unsigned char taskCycle_100ms=0;
@@ -44,12 +44,12 @@ stmt level    source
   34   1              //初始化计时器中断
   35   1              TMOD=0x11;
   36   1              //T0
-  37   1              TH0=(65536-ISR_T0_INTERVAL)/256;//晶振频率为11.014357Mhz，机器周期为12/11014357=1.089487112139183us,计1ms
-             -需要1000/1.089=918
+  37   1              TH0=(65536-ISR_T0_INTERVAL)/256;//晶振频率为11.0592Mhz，机器周期为12/11059200=1.085069444444444us,计1ms需
+             -要1000/1.085=922
   38   1              TL0=(65536-ISR_T0_INTERVAL)%256;
   39   1          //T1
-  40   1              TH1=(65536-ISR_T1_INTERVAL)/256;//晶振频率为11.014357Mhz，机器周期为12/11014357=1.089487112139183us,计1ms
-             -需要1000/1.089=918
+  40   1              TH1=(65536-ISR_T1_INTERVAL)/256;//晶振频率为11.0592Mhz，机器周期为12/11059200=1.085069444444444us,计1ms需
+             -要1000/1.085=922
   41   1              TL1=(65536-ISR_T1_INTERVAL)%256;
   42   1              EA=1;
   43   1              ET0=1;
@@ -62,7 +62,7 @@ stmt level    source
   50   1          if(taskCycle_10ms==10)
   51   1              {
   52   2                  taskCycle_10ms=0;
-C51 COMPILER V7.06   TASK                                                                  05/30/2020 16:54:02 PAGE 2   
+C51 COMPILER V7.06   TASK                                                                  05/30/2020 21:05:36 PAGE 2   
 
   53   2                  tsk_cyclic_10ms();
   54   2              }
