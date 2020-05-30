@@ -1,0 +1,33 @@
+C51 COMPILER V7.06   LED                                                                   05/30/2020 10:42:40 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE LED
+OBJECT MODULE PLACED IN led.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE src\led.c BROWSE DEBUG OBJECTEXTEND PRINT(.\led.lst) OBJECT(led.obj)
+
+stmt level    source
+
+   1          #include <reg51.h>
+   2          #include <intrins.h>
+   3          #include "led.h"
+   4          void led_flow(void)//¬÷¡˜µ„¡¡LED
+   5          {
+   6   1          static unsigned char aa=0xFE;
+   7   1              //≈‹¬Ìµ∆
+   8   1              P1=aa;
+   9   1              aa=_crol_(aa,1);
+  10   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     17    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

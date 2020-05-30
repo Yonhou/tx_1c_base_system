@@ -1,0 +1,55 @@
+C51 COMPILER V7.06   DIGIT_SEG                                                             05/30/2020 10:42:40 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE DIGIT_SEG
+OBJECT MODULE PLACED IN digit_seg.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE src\digit_seg.c BROWSE DEBUG OBJECTEXTEND PRINT(.\digit_seg.lst) OBJECT(dig
+                    -it_seg.obj)
+
+stmt level    source
+
+   1          #include <reg51.h>
+   2          sbit dula=P2^6;//U1Ëø´æÆ÷Ëø´æ¶Ë
+   3          sbit wela=P2^7;//U2Ëø´æÆ÷Ëø´æ¶Ë
+   4          unsigned char code table[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x7
+             -1};
+   5          
+   6          
+   7          void digital_segment_init(void)
+   8          {
+   9   1              wela=1;
+  10   1              //P0=aa;
+  11   1              P0=0xC0;
+  12   1              wela=0;
+  13   1      
+  14   1              //dula=1;
+  15   1              //P0=0x7F;
+  16   1              //dula=0;
+  17   1      }
+  18          void digital_segment(void)
+  19          {
+  20   1          static unsigned char index=0;
+  21   1          //ÊýÂë¹Ü
+  22   1              dula=1;
+  23   1              P0=table[index];
+  24   1              dula=0;
+  25   1              index++;
+  26   1              if(index>15)
+  27   1              {
+  28   2                  index=0;
+  29   2              }
+  30   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     33    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

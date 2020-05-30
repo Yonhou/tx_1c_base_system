@@ -1,6 +1,7 @@
 #include <reg51.h>
-#include <intrins.h>
-sbit light1=P1^0;
+
+#include "task.h"
+
 void delay1s(unsigned int ms)
 {
     unsigned char i,j,k;
@@ -8,16 +9,28 @@ void delay1s(unsigned int ms)
 	    for(j=20;j>0;j--)
 		    for(k=228;k>0;k--);
 }
+
 void main()
 {
-    unsigned char aa=0xFE;
+    static unsigned int taskCycle=0;
+	tsk_init();
     while(1)
 	{
-        //≈‹¬Ìµ∆
-	    P1=aa;
-		delay1s(200);
-		aa=_crol_(aa,1);
-	}
-	
+		tsk_cyclic_10ms();
+		if(taskCycle%10==0)
+		{
+      		tsk_cyclic_100ms();
+		}
+		if(taskCycle%100==0)
+		{
+		    tsk_cyclic_1s();
+		}
+		taskCycle++;
+		if(taskCycle==100)
+		{
+		    taskCycle=0;
+		}
+		delay1s(10);
+	}	
 }
 

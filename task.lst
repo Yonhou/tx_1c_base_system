@@ -1,0 +1,42 @@
+C51 COMPILER V7.06   TASK                                                                  05/30/2020 10:42:40 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE TASK
+OBJECT MODULE PLACED IN task.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE src\task.c BROWSE DEBUG OBJECTEXTEND PRINT(.\task.lst) OBJECT(task.obj)
+
+stmt level    source
+
+   1          #include "led.h"
+   2          #include "digit_seg.h"
+   3          #include "task.h"
+   4          
+   5          void tsk_cyclic_10ms(void)
+   6          {}
+   7          
+   8          void tsk_cyclic_100ms(void)
+   9          {
+  10   1      }
+  11          void tsk_cyclic_1s(void)
+  12          {
+  13   1          led_flow();
+  14   1              digital_segment();
+  15   1      }
+  16          void tsk_init(void)
+  17          {
+  18   1              digital_segment_init();
+  19   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     11    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
