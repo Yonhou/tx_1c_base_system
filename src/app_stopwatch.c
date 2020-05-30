@@ -28,9 +28,9 @@ void app_stopwatch_main(void)
 		secs=0;
 	}
 	digital_seg_switch(0,hrs/10);
-	digital_seg_switch(1,hrs%10);
+	digital_seg_switch(1,((hrs%10)+16));
 	digital_seg_switch(2,mins/10);
-    digital_seg_switch(3,mins%10);
+    digital_seg_switch(3,((mins%10)+16));
 	digital_seg_switch(4,secs/10);
 	digital_seg_switch(5,secs%10);
 }
